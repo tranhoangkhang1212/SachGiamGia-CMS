@@ -1,4 +1,4 @@
-export interface AuthorsResponseDto {
+export interface AuthorResponse {
     id: string;
     name: string;
     slug?: string;

@@ -4,7 +4,7 @@ import LoadingOverlay from '@/components/LoadingOverlay';
 import { Table } from '@/components/Table';
 import { CreateAuthorRequestDto } from '@/interfaces/request/CreateAuthorRequestDto';
 import { PaginationRequest } from '@/interfaces/request/PaginationRequestDto';
-import { AuthorsResponseDto } from '@/interfaces/response/AuthorsResponseDto';
+import { AuthorResponse } from '@/interfaces/response/AuthorsResponseDto';
 import { PaginationResponse } from '@/interfaces/response/PaginationResponse';
 import { executeGetWithPagination, executePostWithBody } from '@/utils/APIUtil';
 import { formatDateUTC } from '@/utils/DateTimeUtil';
@@ -19,7 +19,7 @@ interface IAuthorCommonProps {
     endPoint: string;
 }
 const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
-    const cols = useMemo<ColumnDef<AuthorsResponseDto>[]>(
+    const cols = useMemo<ColumnDef<AuthorResponse>[]>(
         () => [
             {
                 header: 'ID',
@@ -45,7 +45,7 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
             },
             {
                 header: '',
-                cell: (value) => (
+                cell: () => (
                     <>
                         <button className="font-semibold hover:scale-110 duration-300">Xóa</button>
                         <span className="px-4">|</span>
@@ -60,7 +60,7 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
 
     const [totalPage, setTotalPage] = useState(0);
     const [currentPage, setCurrentPage] = useState<number>(0);
-    const [dataRendering, setDataRendering] = useState<AuthorsResponseDto[]>([]);
+    const [dataRendering, setDataRendering] = useState<AuthorResponse[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [requestData, setRequestData] = useState<CreateAuthorRequestDto>();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,7 +68,7 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
     const [isShowCreate, toggleCreateOverlay] = useToggle(false);
 
     const fetchData = useCallback(async (pagination: PaginationRequest) => {
-        const { data }: { data: PaginationResponse<AuthorsResponseDto> } = await executeGetWithPagination(endPoint, {
+        const { data }: { data: PaginationResponse<AuthorResponse> } = await executeGetWithPagination(endPoint, {
             page: pagination.page,
             pageSize: PAGE_SIZE,
         });
@@ -118,7 +118,7 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
             <div className="flex justify-end mb-4">
                 <Button text="Tạo mới" type="create" onClick={toggleCreateOverlay} />
             </div>
-            <Table<AuthorsResponseDto>
+            <Table<AuthorResponse>
                 data={dataRendering}
                 columns={cols}
                 pageSize={PAGE_SIZE}

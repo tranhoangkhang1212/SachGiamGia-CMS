@@ -1,47 +1,41 @@
-import { PaginationRequest } from '@/interfaces/request/PaginationRequestDto';
 import { faAngleLeft, faAngleRight, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { ColumnDef, RowData } from '@tanstack/react-table';
-import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Table as CoreTableType } from '@tanstack/table-core';
+import {
+    ColumnDef,
+    RowData,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    useReactTable,
+} from '@tanstack/react-table';
 import clsx from 'clsx';
-import { useEffect } from 'react';
-import Loading from './Loading';
+import React from 'react';
+import { Table as CoreTableType } from '@tanstack/table-core';
 
-interface ReactTableProps<T extends object> {
+interface TableProps<T extends object> {
     data: T[];
     columns: ColumnDef<T>[];
     pageSize: number;
-    pageCount: number;
-    fetchData: (pagination: PaginationRequest) => void;
-    onRowClick?: (data: T) => void;
 }
 
-export const Table = <T extends object>(props: ReactTableProps<T>) => {
-    const { data = [], columns = [], pageSize, pageCount = 0, fetchData, onRowClick } = props;
+const TableClientSide = <T extends object>(props: TableProps<T>) => {
+    const { data, columns, pageSize } = props;
     const table = useReactTable({
         data,
         columns,
+        // Pipeline
         getCoreRowModel: getCoreRowModel(),
-        pageCount,
-        manualPagination: true,
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        //
+        debugTable: true,
     });
 
-    useEffect(() => {
-        if (!fetchData) {
-            return;
-        }
-        fetchData({ page: table.getState().pagination.pageIndex + 1, pageSize });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [table.getState().pagination.pageIndex, fetchData]);
-
-    if (table.getRowModel().rows.length <= 0) {
-        return <Loading />;
-    }
-
+    const pageCount = Math.ceil(data.length / pageSize);
     return (
         <>
-            <table className="relative w-full text-center">
+            <table className="w-full text-center">
                 <thead className="bg-[#34725b]">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
@@ -57,13 +51,7 @@ export const Table = <T extends object>(props: ReactTableProps<T>) => {
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.map((row) => (
-                        <tr
-                            key={row.id}
-                            className={clsx('font-semibold bg-white border-[1px]', {
-                                'hover:bg-[#00000019] cursor-pointer': onRowClick,
-                            })}
-                            onClick={() => onRowClick && onRowClick(row.original)}
-                        >
+                        <tr key={row.id} className={clsx('font-semibold bg-white border-[1px]')}>
                             {row.getVisibleCells().map((cell) => (
                                 <td className="px-6 py-4 text-[15px] font-normal whitespace-nowrap" key={cell.id}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -150,3 +138,5 @@ const Pagination = <T extends RowData>(props: PaginationProps<T>) => {
         </div>
     );
 };
+
+export default TableClientSide;

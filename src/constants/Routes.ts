@@ -13,7 +13,7 @@ export interface SidebarSubRoute extends BaseSidebarRoutes {
 export const SidebarRoutes: SidebarSubRoute[] = [
     {
         title: 'Sản phẩm',
-        path: '/',
+        path: '/product',
         subRoutes: [
             { title: 'Tác giả', path: '/author' },
             { title: 'Thể loại', path: '/category' },
@@ -23,5 +23,14 @@ export const SidebarRoutes: SidebarSubRoute[] = [
             { title: 'Tạo sản phẩm', path: '/product/create' },
         ],
     },
-    { title: 'Giao diện', path: '/gg', subRoutes: [] },
+    {
+        title: 'Giao diện',
+        path: '/sidebar',
+        subRoutes: [
+            { title: 'Banner', path: '/layout/banner' },
+            { title: 'Sidebar', path: '/layout/sidebar' },
+            { title: 'Sản phẩm chính', path: '/layout/home-product' },
+        ],
+    },
+    { title: 'Tài nguyên', path: '/resource', subRoutes: [{ title: 'Hình ảnh', path: '/resource' }] },
 ];

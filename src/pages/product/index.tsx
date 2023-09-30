@@ -11,6 +11,11 @@ import { removeElementFromArray } from '@/utils/CommonUtil';
 import { ColumnDef } from '@tanstack/react-table';
 import { useCallback, useMemo, useState } from 'react';
 import FilterBar from './filter-bar';
+import toast from 'react-hot-toast';
+import { API } from '@/configs/axios';
+import ConfirmDelete from '@/components/ConfirmDelete';
+import { useToggle } from 'react-use';
+import Link from 'next/link';
 
 export interface IOptionData {
     title: string;
@@ -73,25 +78,45 @@ const Product = () => {
             },
             {
                 header: '',
-                cell: (value) => (
-                    <>
-                        <button className="font-semibold hover:scale-110 duration-300">Xóa</button>
-                        <span className="px-4">|</span>
-                        <button className="font-semibold hover:scale-110 duration-300">Cập nhật</button>
-                    </>
-                ),
+                cell: (value) => {
+                    const { id, name } = value.row.original;
+                    return (
+                        <>
+                            <button
+                                className="font-semibold duration-300 hover:scale-110"
+                                onClick={() => handleDeleteProduct(id, name)}
+                            >
+                                Xóa
+                            </button>
+                            <span className="px-4">|</span>
+                            <button className="font-semibold duration-300 hover:scale-110">
+                                <Link
+                                    href={{
+                                        pathname: '/product/update',
+                                        query: { id },
+                                    }}
+                                >
+                                    Cập nhật
+                                </Link>
+                            </button>
+                        </>
+                    );
+                },
                 accessorKey: 'createdAt',
             },
         ],
         [],
     );
 
+    const [pageIndex, setPageIndex] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [dataRendering, setDataRendering] = useState<ProductResponseDto[]>([]);
     const [filterRequest, setFilterRequest] = useState<GetProductRequestDto>({ ids: [], name: '', option: [] });
     const [filterData, setFilterData] = useState<IOptionData[]>([]);
-
     const [isLoading, setIsLoading] = useState(false);
+    const [deleteInfo, setDeleteInfo] = useState({ id: '', name: '' });
+
+    const [isShowConfirmDelete, toggleConfirmDelete] = useToggle(false);
 
     const fetchData = useCallback(
         async (pagination: PaginationRequest) => {
@@ -105,6 +130,7 @@ const Product = () => {
             );
             setDataRendering(data.rows);
             setTotalPage(data.totalPage);
+            setPageIndex(pagination.page);
             return { page: data.page, rows: data.rows };
         },
         [filterRequest],
@@ -114,55 +140,33 @@ const Product = () => {
         return <LoadingOverlay />;
     }
 
-    const handleOptionClick = async (type: EFilterData, title: string, value: string) => {
-        // const findDataByType = filterData.find((e) => e.type === type);
-        // const findNewDataByType = filterDataOptions.find((e) => e.type === type);
-        // if (!findNewDataByType) {
-        //     return;
-        // }
-        // if (findDataByType) {
-        //     const oldOption = findDataByType.options.find((e) => e.value === value);
-        //     if (oldOption) {
-        //         removeElementFromArray(findDataByType.options, oldOption);
-        //         setFilterData((prev) => [...prev.filter((e) => e.type !== type), findDataByType]);
-        //         return;
-        //     }
-        //     const label = findNewDataByType.options.find((e) => e.value === value)?.label;
-        //     if (label) {
-        //         findDataByType.options.push({ label, value });
-        //         setFilterData((prev) => [...prev.filter((e) => e.type !== type), findDataByType]);
-        //     }
-        // } else {
-        //     const label = findNewDataByType.options.find((e) => e.value === value)?.label;
-        //     if (!label) {
-        //         return;
-        //     }
-        //     const newData: IOptionData = { type, title, options: [{ label, value }] };
-        //     setFilterData((prev) => [...prev.filter((e) => e.type !== type), newData]);
-        // }
-    };
-
-    // const updateFilterData = () => {
-    //     const optionsRequest: GetProductOptionRequestDto[] = filterData
-    //         .map((e) => {
-    //             if (e.options.length > 0) {
-    //                 return {
-    //                     type: e.type,
-    //                     values: e.options.map((v) => v.value),
-    //                 };
-    //             }
-    //         })
-    //         .filter((e) => e !== undefined) as GetProductOptionRequestDto[];
-    //     setFilterRequest((prev) => ({ ...prev, options: optionsRequest }));
-    // };
-
     const handleCellClick = (data: ProductResponseDto) => {
         console.log(data);
     };
 
+    const handleDeleteProduct = async (id: string, name: string) => {
+        setDeleteInfo({ id, name });
+        toggleConfirmDelete();
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            setIsLoading(true);
+            await API.delete('/product', { params: { id: deleteInfo.id } });
+            toast.success(`Xóa sản phẩm ${deleteInfo.name} thành công`);
+            fetchData({ page: pageIndex, pageSize: PAGE_SIZE });
+            toggleConfirmDelete();
+        } catch (error) {
+            toast.error((error as Error).message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <>
-            <FilterBar defaultData={filterDataOptions} data={filterData} onChange={handleOptionClick} />
+            {/* <FilterBar defaultData={filterDataOptions} data={filterData} onChange={handleOptionClick} /> */}
+            {isShowConfirmDelete && <ConfirmDelete onDestroy={toggleConfirmDelete} onConfirm={handleConfirmDelete} />}
             <Table<ProductResponseDto>
                 data={dataRendering}
                 columns={cols}

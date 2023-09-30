@@ -10,7 +10,7 @@ interface IBaseButtonProps {
 }
 interface IButtonProps extends IBaseButtonProps, IBaseAppProps {
     type?: 'normal' | 'create';
-    variant?: 'normal' | 'transparent' | 'white';
+    variant?: 'normal' | 'transparent' | 'white' | 'delete';
 }
 
 const Button: React.FC<IButtonProps> = (props) => {
@@ -30,6 +30,7 @@ const NormalButton: React.FC<IButtonProps> = (props) => {
                 'cursor-pointer duration-300 text-white font-semibold hover:bg-opacity-90',
                 { 'bg-primary': variant === 'normal' },
                 { 'bg-white !text-black': variant === 'white' },
+                { 'bg-red-500 !text-white !border-red-500': variant === 'delete' },
                 className,
             )}
             onClick={onClick}

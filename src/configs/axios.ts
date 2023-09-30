@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-hot-toast';
 
 export const API = axios.create({
-    baseURL: 'http://localhost:3001/api',
+    baseURL: 'http://localhost:3001/api/admin',
 });
 
 API.interceptors.response.use(
@@ -17,7 +17,7 @@ API.interceptors.response.use(
             return Promise.reject(error);
         }
         if ((error as AxiosError).response?.status === StatusCodes.FORBIDDEN) {
-            toast.error('Please logout and then Login again!');
+            toast.error('Please logout and try again!');
         }
         if (error.response?.status === 404 || error.response?.status >= 500) {
             const errorMessage = error.response?.data?.message;

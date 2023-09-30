@@ -15,7 +15,7 @@ const Sidebar = () => {
 
     return (
         <div className="min-w-[250px] bg-primary text-white h-screen overflow-y-auto">
-            <div className="my-3 mx-4 flex justify-between items-center">
+            <div className="flex items-center justify-between mx-4 my-3">
                 <Image src={logo} height={25} alt={''} />
                 <FontAwesomeIcon icon={faEye} className="cursor-pointer" size="lg" />
             </div>
@@ -47,7 +47,7 @@ const Content: React.FC<IContentProps> = (props) => {
     const allPaths = subMenu.map((sub) => sub.path);
     const defaultOpen = allPaths.includes(currentPath);
     const [isShowSubRoute, toggleShowSubRoute] = useToggle(defaultOpen);
-    const active = path === currentPath;
+    const active = path === currentPath && currentPath !== '/';
 
     return (
         <div className="cursor-pointer">
@@ -60,7 +60,7 @@ const Content: React.FC<IContentProps> = (props) => {
                     },
                 )}
                 onClick={toggleShowSubRoute}
-                href={subMenu.length > 0 ? currentPath : path}
+                href={path}
             >
                 <span>{title}</span>
                 {subMenu.length > 0 && (

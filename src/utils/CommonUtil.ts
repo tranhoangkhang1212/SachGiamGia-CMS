@@ -1,3 +1,5 @@
+import slugify from 'slugify';
+
 export const randomInt = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -23,3 +25,17 @@ export const removeElementFromArray = <T>(array: T[], element: T) => {
 };
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export const removeDiacritics = (str: string) => {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+};
+
+export const slugGenerate = (value: string) => {
+    return slugify(value, { trim: true, lower: true });
+};
+
+export const createArrayWithSize = <T>(size: number, callBack: (index: number) => T) => {
+    return [...Array(size)].map((_, index) => {
+        return callBack(index);
+    });
+};

@@ -1,4 +1,4 @@
-import { AuthorsResponseDto } from './AuthorsResponseDto';
+import { AuthorResponse } from './AuthorsResponseDto';
 
 export interface ProductResponseDto {
     id: string;
@@ -8,8 +8,13 @@ export interface ProductResponseDto {
     saleOff: number;
     finalPrice: number;
     image: string;
-    author: AuthorsResponseDto;
-    category: AuthorsResponseDto;
-    publisher: AuthorsResponseDto;
-    distributor: AuthorsResponseDto;
+    author: AuthorResponse;
+    category: AuthorResponse;
+    publisher: AuthorResponse;
+    distributor: AuthorResponse;
+}
+
+export interface ShortProductResponseDto {
+    id: string;
+    name: string;
 }

@@ -3,10 +3,10 @@ import Input from '@/components/Input';
 import Loading from '@/components/Loading';
 import LoadingOverlay from '@/components/LoadingOverlay';
 import SelectV2 from '@/components/NewSelect';
-import Select, { IOption } from '@/components/Select';
+import { IOption } from '@/components/Select';
 import { API } from '@/configs/axios';
-import { ESidebarOption, ESidebarType } from '@/constants/Sidebar.enum';
-import { CreateSidebarRequestDto } from '@/interfaces/request/CreateSidebarRequestDto';
+import { ESidebarOption } from '@/constants/Sidebar.enum';
+import { CreateHomeProductRequestDto } from '@/interfaces/request/CreateHomeProductRequestDto';
 import { AuthorResponse } from '@/interfaces/response/AuthorsResponseDto';
 import { PaginationResponse } from '@/interfaces/response/PaginationResponse';
 import { ShortProductResponseDto } from '@/interfaces/response/ProductResponse';
@@ -25,13 +25,8 @@ const initialRequest = {
     distributors: [],
     products: [],
     publishers: [],
-    subMenu: [],
-    type: ESidebarType.Primary,
+    productsShow: [],
 };
-const typeOptions: IOption[] = Object.keys(ESidebarType).map((key) => ({
-    label: key === 'Primary' ? 'Chính' : 'Phụ',
-    value: key,
-}));
 
 const CreateSidebar = () => {
     const [options, setOptions] = useState<Record<ESidebarOption, IOption[]>>({
@@ -44,7 +39,7 @@ const CreateSidebar = () => {
     const [productOptions, setProductOptions] = useState<IOption[]>([]);
     const [totalPage, setTotalPage] = useState(0);
     const [pageIndex, setPageIndex] = useState(1);
-    const [requestDto, setRequestDto] = useState<CreateSidebarRequestDto>(initialRequest);
+    const [requestDto, setRequestDto] = useState<CreateHomeProductRequestDto>(initialRequest);
     const [isLoading, setIsLoading] = useState(false);
 
     const { loading, retry } = useAsyncRetry(async () => {
@@ -99,10 +94,6 @@ const CreateSidebar = () => {
         handleInputChange('slug', slug);
     };
 
-    const handleTypeChange = (value: string) => {
-        handleInputChange('type', value);
-    };
-
     const handleAuthorChange = (value: string) => {
         if (requestDto.authors.includes(value)) {
             setRequestDto((prev) => ({ ...prev, authors: prev.authors.filter((e) => e !== value) }));
@@ -135,11 +126,11 @@ const CreateSidebar = () => {
         }
     };
 
-    const handleSubmenuChange = (value: string) => {
-        if (requestDto.subMenu.includes(value)) {
-            setRequestDto((prev) => ({ ...prev, subMenu: prev.subMenu.filter((e) => e !== value) }));
+    const handleShowProductsChange = (value: string) => {
+        if (requestDto.productsShow.includes(value)) {
+            setRequestDto((prev) => ({ ...prev, productsShow: prev.productsShow.filter((e) => e !== value) }));
         } else {
-            setRequestDto((prev) => ({ ...prev, subMenu: [...prev.subMenu, value] }));
+            setRequestDto((prev) => ({ ...prev, productsShow: [...prev.productsShow, value] }));
         }
     };
 
@@ -154,8 +145,8 @@ const CreateSidebar = () => {
     const handleCreateSidebar = async () => {
         try {
             setIsLoading(true);
-            await executePostWithBody('/sidebar', requestDto);
-            toast.success(`Tạo sidebar ${requestDto.name} thành công`);
+            await executePostWithBody('/layout/home-products', requestDto);
+            toast.success(`Tạo menu sản phầm chính ${requestDto.name} thành công`);
             retry();
         } catch (error) {
             toast.error((error as Error).message);
@@ -172,28 +163,20 @@ const CreateSidebar = () => {
             </div>
             <div className="flex justify-between">
                 <Input
-                    className="basis-[32%]"
+                    className="basis-[49%]"
                     label="Tên"
                     name="name"
                     onChange={(key, value) => handleNameInputChange(key, String(value))}
                     variant="border"
                 />
                 <Input
-                    className="basis-[32%]"
+                    className="basis-[49%]"
                     label="Slug"
                     name="slug"
                     variant="border"
                     value={requestDto.slug}
                     onChange={(key, value) => handleSlugChange(key, String(value))}
                 />
-                <div className="basis-[32%]">
-                    <span className="inline-block mb-1">Loại</span>
-                    <Select
-                        className="h-[35px]"
-                        options={typeOptions}
-                        onChange={(value) => handleTypeChange(String(value))}
-                    />
-                </div>
             </div>
             <div className="grid grid-cols-3 gap-4 mt-4">
                 <SelectV2
@@ -218,15 +201,16 @@ const CreateSidebar = () => {
                     onChange={(value) => handleCategoryChange(String(value))}
                 />
                 <SelectV2
-                    title="Danh mục phụ"
-                    options={options[ESidebarOption.SubMenu]}
-                    onChange={(value) => handleSubmenuChange(String(value))}
-                />
-                <SelectV2
                     title="Sản phẩm"
                     options={productOptions}
                     getNewOption={totalPage > 1 && pageIndex < totalPage ? handleMoreClick : undefined}
                     onChange={(value) => handleProductsChange(String(value))}
+                />
+                <SelectV2
+                    title="Sản phẩm chính"
+                    options={productOptions}
+                    getNewOption={totalPage > 1 && pageIndex < totalPage ? handleMoreClick : undefined}
+                    onChange={(value) => handleShowProductsChange(String(value))}
                 />
             </div>
         </div>

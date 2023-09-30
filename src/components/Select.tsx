@@ -18,7 +18,7 @@ const Select: React.FC<ISelectProps> = (props) => {
     return (
         <div className={clsx('mb-4', className)}>
             <select
-                className="border-[1px] border-primary rounded cursor-pointer h-[25px]"
+                className="border-[1px] border-primary rounded cursor-pointer h-[40px]"
                 onChange={(e) => onChange(e.target.value)}
             >
                 <option value=""></option>

@@ -18,7 +18,7 @@ export const executePostWithBody = async <T extends object>(path: string, data: 
 };
 
 export const executePutWithBody = async <T extends object>(path: string, data: T) => {
-    return await API.put(path, { data });
+    return await API.put(path, { ...data });
 };
 
 export const executePostWithFormData = async (path: string, formData: FormData) => {
@@ -27,4 +27,16 @@ export const executePostWithFormData = async (path: string, formData: FormData) 
             'Content-Type': 'multipart/form-data',
         },
     });
+};
+
+export const executePutWithFormData = async (path: string, formData: FormData) => {
+    return API.put(path, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
+
+export const executeDeleteWithBody = async <T extends object>(path: string, data: T) => {
+    return await API.delete(path, { data });
 };
