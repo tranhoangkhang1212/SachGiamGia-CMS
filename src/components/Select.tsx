@@ -1,4 +1,4 @@
-import { IBaseAppProps } from '@/interfaces/Props';
+import { IBaseAppProps } from '@/interfaces/CommonProps';
 import clsx from 'clsx';
 import React from 'react';
 

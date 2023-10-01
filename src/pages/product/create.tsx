@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import LoadingOverlay from '@/components/LoadingOverlay';
 import UploadFile from '@/components/UploadFile';
-import { IBaseAppProps } from '@/interfaces/Props';
+import { IBaseAppProps } from '@/interfaces/CommonProps';
 import { CreateProductRequestDto } from '@/interfaces/request/CreateProductRequestDto';
 import { executePostWithBody } from '@/utils/APIUtil';
 import { getJsonFromCsv } from '@/utils/FileUIploadUtils';

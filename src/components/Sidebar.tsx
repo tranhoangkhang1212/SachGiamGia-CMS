@@ -1,5 +1,5 @@
 import { BaseSidebarRoutes, SidebarRoutes } from '@/constants/Routes';
-import { IBaseAppProps } from '@/interfaces/Props';
+import { IBaseAppProps } from '@/interfaces/CommonProps';
 import { faAngleDown, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';

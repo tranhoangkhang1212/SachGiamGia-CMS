@@ -1,4 +1,4 @@
-import { IBaseAppProps } from '@/interfaces/Props';
+import { IBaseAppProps } from '@/interfaces/CommonProps';
 import React from 'react';
 import Sidebar from './Sidebar';
 import Content from './Content';

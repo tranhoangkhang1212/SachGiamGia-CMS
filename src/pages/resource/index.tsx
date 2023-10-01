@@ -55,10 +55,11 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = () => {
             },
             {
                 header: '',
-                cell: () => <button className="font-semibold hover:scale-110 duration-300">Xóa</button>,
+                cell: () => <button className="font-semibold duration-300 hover:scale-110">Xóa</button>,
                 accessorKey: 'createdAt',
             },
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
 

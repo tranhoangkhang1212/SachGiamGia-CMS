@@ -6,9 +6,9 @@ import TextEditor from '@/components/TextEditor';
 import { API } from '@/configs/axios';
 import { IProductDetail, defaultProductDetail } from '@/interfaces/Product';
 import { ContextWithParams } from '@/interfaces/QueryParams';
-import { executePutWithBody, executePutWithFormData } from '@/utils/APIUtil';
+import { executePutWithFormData } from '@/utils/APIUtil';
 import { priceFormat } from '@/utils/CommonUtil';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useAsync } from 'react-use';
 

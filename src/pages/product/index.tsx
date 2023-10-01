@@ -1,53 +1,24 @@
+import ConfirmDelete from '@/components/ConfirmDelete';
 import LoadingOverlay from '@/components/LoadingOverlay';
 import { IOption } from '@/components/Select';
 import { Table } from '@/components/Table';
+import { API } from '@/configs/axios';
 import { EFilterData } from '@/constants/FilterData.enum';
-import { GetProductOptionRequestDto, GetProductRequestDto } from '@/interfaces/request/GetProductRequestDto';
 import { PaginationRequest } from '@/interfaces/request/PaginationRequestDto';
 import { PaginationResponse } from '@/interfaces/response/PaginationResponse';
 import { ProductResponseDto } from '@/interfaces/response/ProductResponse';
 import { executeGetWithPagination } from '@/utils/APIUtil';
-import { removeElementFromArray } from '@/utils/CommonUtil';
 import { ColumnDef } from '@tanstack/react-table';
-import { useCallback, useMemo, useState } from 'react';
-import FilterBar from './filter-bar';
-import toast from 'react-hot-toast';
-import { API } from '@/configs/axios';
-import ConfirmDelete from '@/components/ConfirmDelete';
-import { useToggle } from 'react-use';
 import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useToggle } from 'react-use';
 
 export interface IOptionData {
     title: string;
     type: EFilterData;
     options: IOption[];
 }
-
-const options: IOption[] = [
-    { label: 'Trần Khang', value: '124wefw' },
-    { label: 'Trần Khang 1', value: 'odfgdfg' },
-    { label: 'Trần Khang 2', value: '32fsdf' },
-    { label: 'Trần Khang 3', value: '35fdfdfg' },
-    { label: 'Trần Khang 4', value: '234sf44' },
-];
-
-const filterDataOptions: IOptionData[] = [
-    {
-        title: 'Tác giả',
-        type: EFilterData.Author,
-        options,
-    },
-    {
-        title: 'Nhà phát hành',
-        type: EFilterData.Publisher,
-        options,
-    },
-    {
-        title: 'Nhà xuất bản',
-        type: EFilterData.Distributor,
-        options,
-    },
-];
 
 const PAGE_SIZE = 10;
 const Product = () => {
@@ -105,36 +76,33 @@ const Product = () => {
                 accessorKey: 'createdAt',
             },
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
 
     const [pageIndex, setPageIndex] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
     const [dataRendering, setDataRendering] = useState<ProductResponseDto[]>([]);
-    const [filterRequest, setFilterRequest] = useState<GetProductRequestDto>({ ids: [], name: '', option: [] });
-    const [filterData, setFilterData] = useState<IOptionData[]>([]);
+    // const [filterRequest, setFilterRequest] = useState<GetProductRequestDto>({ ids: [], name: '', option: [] });
     const [isLoading, setIsLoading] = useState(false);
     const [deleteInfo, setDeleteInfo] = useState({ id: '', name: '' });
 
     const [isShowConfirmDelete, toggleConfirmDelete] = useToggle(false);
 
-    const fetchData = useCallback(
-        async (pagination: PaginationRequest) => {
-            const { data }: { data: PaginationResponse<ProductResponseDto> } = await executeGetWithPagination(
-                '/product',
-                {
-                    page: pagination.page,
-                    pageSize: PAGE_SIZE,
-                },
-                { ...filterRequest },
-            );
-            setDataRendering(data.rows);
-            setTotalPage(data.totalPage);
-            setPageIndex(pagination.page);
-            return { page: data.page, rows: data.rows };
-        },
-        [filterRequest],
-    );
+    const fetchData = useCallback(async (pagination: PaginationRequest) => {
+        const { data }: { data: PaginationResponse<ProductResponseDto> } = await executeGetWithPagination(
+            '/product',
+            {
+                page: pagination.page,
+                pageSize: PAGE_SIZE,
+            },
+            // { ...filterRequest },
+        );
+        setDataRendering(data.rows);
+        setTotalPage(data.totalPage);
+        setPageIndex(pagination.page);
+        return { page: data.page, rows: data.rows };
+    }, []);
 
     if (isLoading) {
         return <LoadingOverlay />;

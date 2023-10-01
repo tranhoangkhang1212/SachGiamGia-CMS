@@ -47,14 +47,15 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
                 header: '',
                 cell: () => (
                     <>
-                        <button className="font-semibold hover:scale-110 duration-300">Xóa</button>
+                        <button className="font-semibold duration-300 hover:scale-110">Xóa</button>
                         <span className="px-4">|</span>
-                        <button className="font-semibold hover:scale-110 duration-300">Cập nhật</button>
+                        <button className="font-semibold duration-300 hover:scale-110">Cập nhật</button>
                     </>
                 ),
                 accessorKey: 'createdAt',
             },
         ],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [],
     );
 
@@ -76,6 +77,7 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
         setTotalPage(data.totalPage);
         setCurrentPage(data.page);
         return { page: data.page, rows: data.rows };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleInputChange = (name: string, value: string | number) => {
