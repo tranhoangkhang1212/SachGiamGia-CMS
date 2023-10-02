@@ -21,7 +21,7 @@ else
 fi
 
 # Step 2: Run the Docker container
-docker run -d --name ${container_name} -p 8082:3002 --restart always sach_giam_gia_cms
+docker run -d --name ${container_name} -p 8082:3000 --restart always sach_giam_gia_cms
 
 # Check container start
 if [ $? -eq 0 ]; then
