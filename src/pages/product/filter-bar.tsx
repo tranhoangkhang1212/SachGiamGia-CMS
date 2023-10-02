@@ -10,7 +10,7 @@ interface IFilterBarProps {
 }
 
 const FilterBar: React.FC<IFilterBarProps> = (props) => {
-    const { defaultData = [], data, onChange } = props;
+    const { defaultData = [], data = [], onChange } = props;
 
     const getAllOptions = (): string[] => {
         return data.map((e) => e.options.map((v) => v.label)).flatMap((e) => e);
@@ -21,7 +21,7 @@ const FilterBar: React.FC<IFilterBarProps> = (props) => {
             {getAllOptions().length > 0 && (
                 <div className="flex flex-wrap mb-4 max-h-[62px] overflow-y-auto">
                     {getAllOptions().map((value) => (
-                        <div key={value} className="bg-red-500 mr-4 text-white rounded-xl px-3 mb-2">
+                        <div key={value} className="px-3 mb-2 mr-4 text-white bg-red-500 rounded-xl">
                             {value}
                         </div>
                     ))}
