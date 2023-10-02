@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-hot-toast';
 
 export const API = axios.create({
-    baseURL: 'http://localhost:3001/api/admin',
+    baseURL: `${process.env.API_ENDPOINT}/api/admin`,
 });
 
 API.interceptors.response.use(
