@@ -17,6 +17,10 @@ export const executePostWithBody = async <T extends object>(path: string, data: 
     return await API.post(path, { ...data });
 };
 
+export const executePostHardTokenWithBody = async <T extends object>(path: string, data: T) => {
+    return await API.post(path, { ...data }, { headers: { 'hard-token': true } });
+};
+
 export const executePutWithBody = async <T extends object>(path: string, data: T) => {
     return await API.put(path, { ...data });
 };

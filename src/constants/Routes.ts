@@ -4,16 +4,17 @@ export const RouteTopComponentSpecial = [];
 export interface BaseSidebarRoutes {
     title: string;
     path: string;
+    notRoute?: boolean;
 }
 
 export interface SidebarSubRoute extends BaseSidebarRoutes {
-    subRoutes?: BaseSidebarRoutes[];
+    subRoutes: BaseSidebarRoutes[];
 }
 
 export const SidebarRoutes: SidebarSubRoute[] = [
     {
         title: 'Sản phẩm',
-        path: '/product',
+        path: '/',
         subRoutes: [
             { title: 'Tác giả', path: '/author' },
             { title: 'Thể loại', path: '/category' },

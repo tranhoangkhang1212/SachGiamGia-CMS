@@ -26,7 +26,7 @@ const NormalButton: React.FC<IButtonProps> = (props) => {
     return (
         <div
             className={clsx(
-                'border-primary border-2 rounded-md px-6 py-2',
+                'flexc-center border-primary border-2 rounded-md px-6 py-2',
                 'cursor-pointer duration-300 text-white font-semibold hover:bg-opacity-90',
                 { 'bg-primary': variant === 'normal' },
                 { 'bg-white !text-black': variant === 'white' },

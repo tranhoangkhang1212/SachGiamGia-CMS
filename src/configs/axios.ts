@@ -1,3 +1,4 @@
+import { getValue } from '@/utils/LocalStorage';
 import axios, { AxiosError, AxiosHeaders } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { toast } from 'react-hot-toast';
@@ -18,6 +19,9 @@ API.interceptors.response.use(
         }
         if ((error as AxiosError).response?.status === StatusCodes.FORBIDDEN) {
             toast.error('Please logout and try again!');
+            if (window.location.pathname != '/login') {
+                window.location.pathname = '/login';
+            }
         }
         if (error.response?.status === 404 || error.response?.status >= 500) {
             const errorMessage = error.response?.data?.message;
@@ -34,12 +38,12 @@ API.interceptors.response.use(
 
 API.interceptors.request.use(
     (config) => {
-        let requireAuth = false;
-        if (config.headers && config.headers['require-auth']) {
-            requireAuth = true;
+        let hardToken = false;
+        if (config.headers && config.headers['hard-token']) {
+            hardToken = true;
         }
-        const token = 'Token';
-        config.headers.Authorization = requireAuth ? `token||${token}` : process.env.NEXT_PUBLIC_HARD_TOKEN;
+        const token = getValue('token');
+        config.headers.Authorization = hardToken ? `token||${process.env.NEXT_PUBLIC_HARD_TOKEN}` : `token||${token}`;
         config.headers = {
             mode: 'no-cors',
             ...config.headers,

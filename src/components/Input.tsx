@@ -7,7 +7,7 @@ interface IInputProps extends IBaseAppProps {
     name: string;
     require?: boolean;
     label?: string;
-    type?: 'text' | 'number';
+    type?: 'text' | 'number' | 'password';
     onChange: (name: string, value: string | number) => void;
     variant?: 'normal' | 'border';
     value?: string | number;

@@ -36,13 +36,13 @@ const Sidebar = () => {
 interface IContentProps extends IBaseAppProps {
     title: string;
     path: string;
-    subMenu?: BaseSidebarRoutes[];
+    subMenu: BaseSidebarRoutes[];
     currentPath: string;
     pushRoute: (url: string) => Promise<boolean>;
 }
 
 const Content: React.FC<IContentProps> = (props) => {
-    const { title, path, subMenu = [], currentPath, pushRoute } = props;
+    const { path, subMenu = [], currentPath, pushRoute } = props;
 
     const allPaths = subMenu.map((sub) => sub.path);
     const defaultOpen = allPaths.includes(currentPath);
@@ -51,29 +51,21 @@ const Content: React.FC<IContentProps> = (props) => {
 
     return (
         <div className="cursor-pointer">
-            <Link
-                className={clsx(
-                    'flex justify-between items-end px-6 py-3 hover:bg-[#34725b]',
-                    'duration-300 ease-in-out',
-                    {
-                        'bg-[#34725b]': active || isShowSubRoute,
-                    },
-                )}
-                onClick={toggleShowSubRoute}
-                href={path}
-            >
-                <span>{title}</span>
-                {subMenu.length > 0 && (
-                    <span>
-                        <FontAwesomeIcon
-                            icon={faAngleDown}
-                            className={clsx('transition-transform duration-300 transform', {
-                                '-rotate-180': isShowSubRoute,
-                            })}
-                        />
-                    </span>
-                )}
-            </Link>
+            {subMenu.length < 0 ? (
+                <MainMenu
+                    isShowSubRoute={isShowSubRoute}
+                    toggleShowSubRoute={toggleShowSubRoute}
+                    {...props}
+                    active={active}
+                />
+            ) : (
+                <MainMenuNotRoute
+                    isShowSubRoute={isShowSubRoute}
+                    toggleShowSubRoute={toggleShowSubRoute}
+                    {...props}
+                    active={active}
+                />
+            )}
             <div
                 className={clsx('transition-transform duration-300 transform origin-top', {
                     'visible scale-y-100': isShowSubRoute,
@@ -91,6 +83,65 @@ const Content: React.FC<IContentProps> = (props) => {
                     />
                 ))}
             </div>
+        </div>
+    );
+};
+
+interface MainMenuProps {
+    active: boolean;
+    isShowSubRoute: boolean;
+    toggleShowSubRoute: () => void;
+    pushRoute: (url: string) => Promise<boolean>;
+    path: string;
+    title: string;
+    subMenu: BaseSidebarRoutes[];
+}
+
+const MainMenu: React.FC<MainMenuProps> = (props) => {
+    const { title, path, active, isShowSubRoute, toggleShowSubRoute, subMenu } = props;
+    return (
+        <Link
+            className={clsx('flex justify-between items-end px-6 py-3 hover:bg-[#34725b]', 'duration-300 ease-in-out', {
+                'bg-[#34725b]': active || isShowSubRoute,
+            })}
+            onClick={toggleShowSubRoute}
+            href={path}
+        >
+            <span>{title}</span>
+            {subMenu.length > 0 && (
+                <span>
+                    <FontAwesomeIcon
+                        icon={faAngleDown}
+                        className={clsx('transition-transform duration-300 transform', {
+                            '-rotate-180': isShowSubRoute,
+                        })}
+                    />
+                </span>
+            )}
+        </Link>
+    );
+};
+
+const MainMenuNotRoute: React.FC<MainMenuProps> = (props) => {
+    const { title, active, isShowSubRoute, toggleShowSubRoute, subMenu } = props;
+    return (
+        <div
+            className={clsx('flex justify-between items-end px-6 py-3 hover:bg-[#34725b]', 'duration-300 ease-in-out', {
+                'bg-[#34725b]': active || isShowSubRoute,
+            })}
+            onClick={toggleShowSubRoute}
+        >
+            <span>{title}</span>
+            {subMenu.length > 0 && (
+                <span>
+                    <FontAwesomeIcon
+                        icon={faAngleDown}
+                        className={clsx('transition-transform duration-300 transform', {
+                            '-rotate-180': isShowSubRoute,
+                        })}
+                    />
+                </span>
+            )}
         </div>
     );
 };
