@@ -91,7 +91,6 @@ const Banner = () => {
                         className={clsx('cursor-pointer relative')}
                         onClick={() => handleDisabled(banner.url)}
                     >
-                        {banner.url}
                         <Image
                             src={banner.url}
                             alt=""
