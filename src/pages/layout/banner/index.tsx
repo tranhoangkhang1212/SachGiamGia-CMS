@@ -73,31 +73,18 @@ const Banner = () => {
     };
 
     return (
-        <div>
-            <div className="flex items-center justify-end">
-                <Button
-                    variant="delete"
-                    text="Xóa"
-                    className="mr-2 w-[125px] flex-center"
-                    onClick={handleDeleteImages}
-                />
-                <UploadFile handleFileChange={handleFileChange} />
+        <>
+            <div className="mr-6">
+                <div className="flex items-center justify-end mt-2">
+                    <Button variant="white" text="Ẩn" className="mr-2 w-[125px]" onClick={handleUpdateBannerStatus} />
+                    <Button variant="white" text="Hiển thị" className="w-[125px]" onClick={handleUpdateBannerStatus} />
+                </div>
+                <div className="flex items-start justify-end mt-4">
+                    <Button variant="delete" text="Xóa" className="mr-2 w-[125px] -mt-2" onClick={handleDeleteImages} />
+                    <UploadFile handleFileChange={handleFileChange} />
+                </div>
             </div>
-            <div className="flex items-center justify-end mt-2">
-                <Button
-                    variant="white"
-                    text="Ẩn"
-                    className="mr-2 w-[125px] flex-center"
-                    onClick={handleUpdateBannerStatus}
-                />
-                <Button
-                    variant="white"
-                    text="Hiển thị"
-                    className="w-[125px] flex-center"
-                    onClick={handleUpdateBannerStatus}
-                />
-            </div>
-            <div className="grid grid-cols-5 gap-4 max-h-[85vh] overflow-y-auto mt-4 pr-2">
+            <div className="grid grid-cols-5 gap-4 max-h-[85vh] overflow-y-auto mt-8 pr-2">
                 {bannerData.map((banner, index) => (
                     <div
                         key={index}
@@ -117,7 +104,7 @@ const Banner = () => {
                     </div>
                 ))}
             </div>
-        </div>
+        </>
     );
 };
 

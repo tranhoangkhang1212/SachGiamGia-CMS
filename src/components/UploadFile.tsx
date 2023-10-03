@@ -20,7 +20,7 @@ const UploadFile: React.FC<IUploadProps> = (props) => {
     const id = Math.random().toString();
 
     return (
-        <div className="relative text-black">
+        <div className="text-black ">
             <input type="file" className="hidden" id={id} onChange={onChange} />
             <label
                 htmlFor={id}
@@ -28,7 +28,7 @@ const UploadFile: React.FC<IUploadProps> = (props) => {
             >
                 <FontAwesomeIcon icon={faCloudArrowUp} /> <span>Upload</span>
             </label>
-            <div className="mt-3">
+            <div className="absolute mt-3">
                 {fileName ? <span>File đã chọn: {fileName}</span> : <span>Không có file được chọn</span>}
             </div>
         </div>
