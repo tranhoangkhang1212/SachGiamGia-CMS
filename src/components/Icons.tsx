@@ -5,7 +5,7 @@ interface IIconsProps {
     className?: string;
 }
 
-export const Empty: React.FC<IIconsProps> = ({ height = '1em' }) => (
+export const Empty: React.FC<IIconsProps> = () => (
     <svg width="184" height="152" viewBox="0 0 184 152" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fill-rule="evenodd">
             <g transform="translate(24 31.67)">
