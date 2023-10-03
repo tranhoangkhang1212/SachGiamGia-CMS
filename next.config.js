@@ -14,7 +14,7 @@ const nextConfig = {
         ];
     },
     images: {
-        domains: ['localhost'],
+        domains: ['localhost', 's3.sachgiamgia.vn'],
     },
 };
 
