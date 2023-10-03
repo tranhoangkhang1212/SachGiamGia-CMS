@@ -7,6 +7,7 @@ import { addValue, getValue } from '@/utils/LocalStorage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import bg from '~/assets/images/bg.jpg';
 
 const Login = () => {
     const [userInfo, setUserInfo] = useState({ email: '', password: '' });
@@ -59,7 +60,10 @@ const Login = () => {
     return (
         <>
             {isLoading && <LoadingOverlay />}
-            <div className="w-screen h-screen overflow-hidden flex flex-col items-center bg-[url('../../public/assets/images/bg.jpg')]">
+            <div
+                className="flex flex-col items-center w-screen h-screen overflow-hidden"
+                style={{ backgroundImage: `url(${bg.src})` }}
+            >
                 <div className="flex-col flex-center w-[420px] mt-24">
                     <div className="uppercase">
                         <h1 className="text-center text-primary text-[32px] font-bold">Sách giảm giá</h1>
