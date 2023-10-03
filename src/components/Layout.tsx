@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import Content from './Content';
+import { RouteNotLayout } from '@/constants/Routes';
 interface ILayoutProps extends IBaseAppProps {}
 
 const Toaster = dynamic(() => import('react-hot-toast').then((c) => c.Toaster), {
@@ -16,7 +17,7 @@ const Sidebar = dynamic(() => import('./Sidebar').then((c) => c), {
 
 const Layout: React.FC<ILayoutProps> = (props) => {
     const { children } = props;
-    const { push } = useRouter();
+    const { push, pathname } = useRouter();
     const token = getValue('token');
 
     useEffect(() => {
@@ -26,7 +27,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
 
-    if (!token) {
+    if (RouteNotLayout.includes(pathname)) {
         return (
             <div className="flex">
                 <Toaster />
