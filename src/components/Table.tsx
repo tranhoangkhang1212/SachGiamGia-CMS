@@ -6,7 +6,7 @@ import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-tabl
 import { Table as CoreTableType } from '@tanstack/table-core';
 import clsx from 'clsx';
 import { useEffect } from 'react';
-import Loading from './Loading';
+import { Empty } from './Icons';
 
 interface ReactTableProps<T extends object> {
     data: T[];
@@ -35,10 +35,6 @@ export const Table = <T extends object>(props: ReactTableProps<T>) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [table.getState().pagination.pageIndex, fetchData]);
 
-    if (table.getRowModel().rows.length <= 0) {
-        return <Loading />;
-    }
-
     return (
         <>
             <table className="relative w-full text-center">
@@ -56,21 +52,35 @@ export const Table = <T extends object>(props: ReactTableProps<T>) => {
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.map((row) => (
-                        <tr
-                            key={row.id}
-                            className={clsx('font-semibold bg-white border-[1px]', {
-                                'hover:bg-[#00000019] cursor-pointer': onRowClick,
-                            })}
-                            onClick={() => onRowClick && onRowClick(row.original)}
-                        >
-                            {row.getVisibleCells().map((cell) => (
-                                <td className="px-6 py-4 text-[15px] font-normal whitespace-nowrap" key={cell.id}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </td>
+                    {table.getRowModel().rows.length > 0 ? (
+                        <>
+                            {table.getRowModel().rows.map((row) => (
+                                <tr
+                                    key={row.id}
+                                    className={clsx('font-semibold bg-white border-[1px]', {
+                                        'hover:bg-[#00000019] cursor-pointer': onRowClick,
+                                    })}
+                                    onClick={() => onRowClick && onRowClick(row.original)}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td
+                                            className="px-6 py-4 text-[15px] font-normal whitespace-nowrap"
+                                            key={cell.id}
+                                        >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
+                                    ))}
+                                </tr>
                             ))}
+                        </>
+                    ) : (
+                        <tr className="relative">
+                            <td className="absolute flex-col -translate-x-1/2 flex-center left-1/2 top-6">
+                                <Empty />
+                                <span>No data</span>
+                            </td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
             {pageCount > 1 && <Pagination table={table} />}

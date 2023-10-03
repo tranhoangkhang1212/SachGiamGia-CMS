@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 import { useAsyncRetry } from 'react-use';
 
 const Banner = () => {
-    const [bannerData, setBannerData] = useState<BannerResponseDto[]>();
+    const [bannerData, setBannerData] = useState<BannerResponseDto[]>([]);
     const [listSelected, setListSelected] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +21,7 @@ const Banner = () => {
         const { data } = await API.get('/layout/banners');
         setBannerData(data);
     });
-    if (loading || isLoading || !bannerData) {
+    if (loading || isLoading) {
         return <LoadingOverlay />;
     }
 
@@ -74,7 +74,7 @@ const Banner = () => {
 
     return (
         <div>
-            <div className="flex justify-end items-center">
+            <div className="flex items-center justify-end">
                 <Button
                     variant="delete"
                     text="Xóa"
@@ -83,7 +83,7 @@ const Banner = () => {
                 />
                 <UploadFile handleFileChange={handleFileChange} />
             </div>
-            <div className="flex justify-end items-center mt-2">
+            <div className="flex items-center justify-end mt-2">
                 <Button
                     variant="white"
                     text="Ẩn"
