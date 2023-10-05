@@ -40,6 +40,7 @@ const Banner = () => {
             formData.append('file', file);
             const { data } = await executePutWithFormData('layout/banners', formData);
             setBannerData(data);
+            toast.success('Tải lên ảnh thành công!');
         } catch (error) {
             toast.error((error as Error).message);
         } finally {
@@ -52,6 +53,7 @@ const Banner = () => {
             setIsLoading(true);
             await executeDeleteWithBody('layout/banners', { urls: listSelected });
             retry();
+            toast.success('Xóa sản phẩm thành công!');
         } catch (error) {
             toast.error((error as Error).message);
         } finally {
@@ -65,6 +67,7 @@ const Banner = () => {
             await executePutWithBody('layout/banners/status', { urls: listSelected });
             retry();
             setListSelected([]);
+            toast.success('Cập nhật banner thành công!');
         } catch (error) {
             toast.error((error as Error).message);
         } finally {
@@ -74,14 +77,31 @@ const Banner = () => {
 
     return (
         <>
-            <div className="mr-6">
-                <div className="flex items-center justify-end mt-2">
-                    <Button variant="white" text="Ẩn" className="mr-2 w-[125px]" onClick={handleUpdateBannerStatus} />
-                    <Button variant="white" text="Hiển thị" className="w-[125px]" onClick={handleUpdateBannerStatus} />
-                </div>
-                <div className="flex items-start justify-end mt-4">
-                    <Button variant="delete" text="Xóa" className="mr-2 w-[125px] -mt-2" onClick={handleDeleteImages} />
-                    <UploadFile handleFileChange={handleFileChange} />
+            <div className="flex justify-end">
+                <div className="flex flex-col items-start">
+                    <div className="flex items-center justify-end mt-2">
+                        <Button
+                            variant="white"
+                            text="Ẩn"
+                            className="mr-2 w-[125px]"
+                            onClick={handleUpdateBannerStatus}
+                        />
+                        <Button
+                            variant="white"
+                            text="Hiển thị"
+                            className="w-[125px]"
+                            onClick={handleUpdateBannerStatus}
+                        />
+                    </div>
+                    <div className="flex items-start justify-end mt-4">
+                        <Button
+                            variant="delete"
+                            text="Xóa"
+                            className="mr-2 w-[125px] -mt-2"
+                            onClick={handleDeleteImages}
+                        />
+                        <UploadFile handleFileChange={handleFileChange} />
+                    </div>
                 </div>
             </div>
             <div className="grid grid-cols-5 gap-4 max-h-[85vh] overflow-y-auto mt-8 pr-2">

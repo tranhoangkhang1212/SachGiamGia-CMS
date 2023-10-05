@@ -86,20 +86,21 @@ const AuthorCommon: React.FC<IAuthorCommonProps> = ({ endPoint }) => {
 
     const handleCopyData = async (id: string) => {
         copyToClipboard(id);
-        toast.success(`Copy ${id} successful`);
+        toast.success(`Sao chép ${id} thành công`);
     };
 
     const handleCreateClick = async () => {
         try {
             setIsLoading(true);
             if (!requestData?.name) {
-                toast.error('Name must not be null');
+                toast.error('Tên không được để trống!');
                 return;
             }
             await executePostWithBody<CreateAuthorRequestDto>(endPoint, requestData);
             toggleCreateOverlay();
             setRequestData(undefined);
             fetchData({ page: currentPage, pageSize: PAGE_SIZE });
+            toast.success('Tạo mới thành công');
         } catch (error) {
             toast.error((error as Error).message);
         } finally {

@@ -28,7 +28,7 @@ const UploadFile: React.FC<IUploadProps> = (props) => {
             >
                 <FontAwesomeIcon icon={faCloudArrowUp} /> <span>Upload</span>
             </label>
-            <div className="absolute mt-3">
+            <div className="mt-3">
                 {fileName ? <span>File đã chọn: {fileName}</span> : <span>Không có file được chọn</span>}
             </div>
         </div>

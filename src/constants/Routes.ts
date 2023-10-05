@@ -29,8 +29,9 @@ export const SidebarRoutes: SidebarSubRoute[] = [
         path: '/sidebar',
         subRoutes: [
             { title: 'Banner', path: '/layout/banner' },
-            { title: 'Sidebar', path: '/layout/sidebar' },
+            { title: 'Danh mục', path: '/layout/sidebar' },
             { title: 'Sản phẩm chính', path: '/layout/home-product' },
+            { title: 'Thông tin cơ bản', path: '/layout/base-layout' },
         ],
     },
     { title: 'Tài nguyên', path: '/resource', subRoutes: [{ title: 'Hình ảnh', path: '/resource' }] },

@@ -17,7 +17,9 @@ const Sidebar = () => {
         <div className="min-w-[250px] bg-primary text-white h-screen overflow-y-auto">
             <div className="flex items-center justify-between mx-4 my-3">
                 <Image src={logo} height={25} alt={''} />
-                <FontAwesomeIcon icon={faEye} className="cursor-pointer" size="lg" />
+                <Link href="https://www.sachgiamgia.vn/" target="_blank">
+                    <FontAwesomeIcon icon={faEye} className="cursor-pointer" size="lg" />
+                </Link>
             </div>
             {SidebarRoutes.map((route, index) => (
                 <Content

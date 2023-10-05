@@ -48,7 +48,7 @@ const CreateProduct = () => {
         try {
             setIsLoading(true);
             await executePostWithBody('/product/create-multiple', { products });
-            toast.success(`Create ${products.length} successful`);
+            toast.success(`Tạo mới thành công ${products.length} sản phẩm`);
         } catch (error) {
             toast.error((error as Error).message);
         } finally {
